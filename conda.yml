@@ -1,0 +1,14 @@
+name: data-warehouse
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - boto3
+  - awswrangler
+  - psycopg2
+  - jupyter
+  - pip
+  - pip:
+    - python-dotenv
