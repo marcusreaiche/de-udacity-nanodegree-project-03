@@ -3,7 +3,7 @@ Create Redshift Cluster following the specifications set in CONFIG_FILE (dwg.cfg
 """
 import dotenv
 import boto3
-from utils.create_aws_resources import (
+from utils.manage_aws_resources import (
     create_redshift_cluster,
     create_redshift_service_role)
 from config import Config
