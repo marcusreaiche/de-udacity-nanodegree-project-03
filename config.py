@@ -7,12 +7,15 @@ CONFIG_FILE = os.path.join(CURR_DIR, 'dwh.cfg')
 
 
 class Config:
-
+    """
+    Manage Project configuration
+    """
     def __init__(self, config_file=CONFIG_FILE):
         self.config_file = CONFIG_FILE
         self.config = configparser.ConfigParser()
 
     def read(self):
+        """Read config file and polulate fields"""
         self.config.read(self.config_file)
         self._populate()
 
@@ -34,6 +37,9 @@ class Config:
         self.node_type = cluster_infra['node_type']
         self.number_of_nodes = int(cluster_infra['number_of_nodes'])
 
-    def write(self):
-        with open(self.config_file, 'wt') as fp:
+    def write(self, file_path=None):
+        """Write configuration to disk"""
+        if file_path is None:
+            file_path = self.config_file
+        with open(file_path, 'wt') as fp:
             self.config.write(fp)
