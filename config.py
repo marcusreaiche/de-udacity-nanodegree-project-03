@@ -21,7 +21,10 @@ class Config:
 
     def _populate(self):
         # IAM Role Name
-        self.iam_role_name = self.config['IAM_ROLE']['name']
+        iam_role = self.config['IAM_ROLE']
+        self.iam_role_name = iam_role['name']
+        if 'arn' in iam_role:
+            self.iam_role_arn = iam_role['arn']
         # Identifier & Credentials
         cluster_credentials = self.config['CLUSTER_CREDENTIALS']
         self.cluster_identifier = cluster_credentials['cluster_identifier']
@@ -36,6 +39,11 @@ class Config:
         self.cluster_type = cluster_infra['cluster_type']
         self.node_type = cluster_infra['node_type']
         self.number_of_nodes = int(cluster_infra['number_of_nodes'])
+        # S3
+        s3_paths = self.config['S3']
+        self.s3_song_data = s3_paths['song_data']
+        self.s3_log_data = s3_paths['log_data']
+        self.s3_log_jsonpath = s3_paths['log_jsonpath']
 
     def write(self, file_path=None):
         """Write configuration to disk"""

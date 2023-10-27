@@ -3,9 +3,10 @@ Create Redshift Cluster following the specifications set in CONFIG_FILE (dwg.cfg
 """
 import dotenv
 import boto3
-from utils.create_aws_resources import (
+from utils.manage_aws_resources import (
     create_redshift_cluster,
-    create_redshift_service_role)
+    create_redshift_service_role,
+    get_iam_role_arn)
 from config import Config
 
 
@@ -14,7 +15,7 @@ def main():
     Perform the following tasks
     - Create Data Warehouse IAM Role
     - Create and launch Redshift cluster
-    - Write cluster endpoint to CONFIG_FILE
+    - Write cluster endpoint and IAM role arn to CONFIG_FILE
     """
     # Load environment variables
     dotenv.load_dotenv('.env')
@@ -29,10 +30,8 @@ def main():
         role_name=config.iam_role_name,
         policy_arn_lst=["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"])
     # Service role Arn
-    for role in iam.list_roles()['Roles']:
-        if role['RoleName'] == config.iam_role_name:
-            role_arn = role['Arn']
-            break
+    iam_role_arn = get_iam_role_arn(iam_client=iam,
+                                    iam_role_name=config.iam_role_name)
     # Redshift cluster
     redshift = boto3.client('redshift')
     cluster_props = create_redshift_cluster(
@@ -48,10 +47,11 @@ def main():
         node_type=config.node_type,
         number_of_nodes=config.number_of_nodes,
         # IAM Roles
-        iam_roles=[role_arn])
-    # Write cluster endpoint to CONFIG_FILE
+        iam_roles=[iam_role_arn])
+    # Write cluster endpoint and IAM role arn to CONFIG_FILE
     CLUSTER_ENDPOINT = cluster_props['Endpoint']['Address']
     config.config['CLUSTER_CREDENTIALS']['db_host'] = CLUSTER_ENDPOINT
+    config.config['IAM_ROLE']['arn'] = iam_role_arn
     config.write()
 
 
