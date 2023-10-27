@@ -36,6 +36,10 @@ def main():
     if 'db_host' in config.config['CLUSTER_CREDENTIALS']:
         del config.config['CLUSTER_CREDENTIALS']['db_host']
         config.write()
+    # Remove arn from CONFIG_FILE
+    if 'arn' in config.config['IAM_ROLE']:
+        del config.config['IAM_ROLE']['arn']
+        config.write()
 
 
 if __name__ == "__main__":

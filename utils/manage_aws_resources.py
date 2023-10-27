@@ -151,3 +151,14 @@ def delete_redshift_cluster(redshift_client,
     final = time.time()
     print(f'Task took {final - start:.1f} seconds')
     return cluster_props
+
+
+def get_iam_role_arn(iam_client, iam_role_name):
+    """
+    Return the IAM role arn given the iam_role_name
+    """
+    for role in iam_client.list_roles()['Roles']:
+        if role['RoleName'] == iam_role_name:
+            return role['Arn']
+    # Role not found
+    return None
