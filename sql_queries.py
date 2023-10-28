@@ -59,7 +59,7 @@ songplays_table_create = """
 create table if not exists songplays (
     songplay_id integer identity(0,1) primary key,
     start_time timestamp,
-    user_id varchar(10),
+    user_id integer,
     level varchar(4),
     song_id varchar(18),
     artist_id varchar(18),
@@ -71,7 +71,7 @@ create table if not exists songplays (
 
 users_table_create = """
 create table if not exists users (
-	user_id varchar(10) not null,
+	user_id integer not null,
     first_name varchar(32),
     last_name varchar(64),
     gender varchar(1),
@@ -92,7 +92,7 @@ create table if not exists songs (
 
 artists_table_create = """
 create table if not exists artists (
-    artist_id integer primary key,
+    artist_id varchar(18) primary key,
     name varchar(252) not null,
     location varchar(252),
     latitude float,
@@ -113,11 +113,21 @@ create table if not exists time (
 """
 
 # STAGING TABLES
-staging_events_copy = ("""
-""").format()
+staging_events_copy = f"""
+copy staging_events
+from '{cfg.s3_log_data}'
+credentials 'aws_iam_role={cfg.iam_role_arn}'
+region 'us-west-2'
+json '{cfg.s3_log_jsonpath}';
+"""
 
-staging_songs_copy = ("""
-""").format()
+staging_songs_copy = f"""
+copy staging_songs
+from '{cfg.s3_song_data}'
+credentials 'aws_iam_role={cfg.iam_role_arn}'
+region 'us-west-2'
+format as json 'auto';
+"""
 
 # FINAL TABLES
 songplays_table_insert = ("""
@@ -154,7 +164,9 @@ create_table_queries = [
     artists_table_create,
     time_table_create]
 
-copy_table_queries = [staging_events_copy, staging_songs_copy]
+copy_table_queries = [
+    staging_events_copy,
+    staging_songs_copy]
 
 insert_table_queries = [
     songplays_table_insert,
