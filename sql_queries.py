@@ -71,7 +71,7 @@ create table if not exists songplays (
 
 users_table_create = """
 create table if not exists users (
-	user_id integer not null,
+    user_id integer not null,
     first_name varchar(32),
     last_name varchar(64),
     gender varchar(1),
@@ -130,20 +130,83 @@ format as json 'auto';
 """
 
 # FINAL TABLES
-songplays_table_insert = ("""
-""")
+songplays_table_insert = """
+insert into songplays (
+    start_time, user_id, level, song_id,
+    artist_id, session_id, location, user_agent)
+select
+    timestamp 'epoch' + (e.ts / 1000) * interval '1 second' as start_time,
+    cast(e.userId as integer) as user_id,
+    e.level as level,
+    s.song_id as song_id,
+    s.artist_id as artist_id,
+    e.sessionId as session_id,
+    e.location as location,
+    e.userAgent as user_agent
+from staging_events as e
+left join staging_songs as s
+on  (
+    e.song = s.title and
+    e.artist = s.artist_name and
+    e.length = s.duration)
+where e.page = 'NextSong';
+"""
 
-user_table_insert = ("""
-""")
+users_table_insert = """
+insert into users
+select
+    cast(userid as integer) user_id,
+    firstname first_name,
+    lastname last_name,
+    gender,
+    level
+from staging_events
+where page = 'NextSong'
+group by user_id, first_name, last_name, gender, level;
+"""
 
-song_table_insert = ("""
-""")
+songs_table_insert = """
+insert into songs
+select
+    song_id,
+    title,
+    artist_id,
+    year,
+    duration
+from staging_songs;
+"""
 
-artist_table_insert = ("""
-""")
+artists_table_insert = """
+insert into artists
+select
+    artist_id,
+    artist_name as name,
+    artist_location as location,
+    artist_latitude as latitude,
+    artist_longitude as longitude
+from staging_songs
+group by artist_id, name, location, latitude, longitude;
+"""
 
-time_table_insert = ("""
-""")
+time_table_insert = """
+insert into time
+with
+unique_ts as (
+    select
+        distinct timestamp 'epoch' + (ts / 1000) * interval '1 second'
+            as start_time
+    from staging_events
+    where page = 'NextSong')
+select
+    start_time,
+    extract(hour from start_time) "hour",
+    extract(day from start_time) "day",
+    extract(week from start_time) "week",
+    extract(month from start_time) "month",
+    extract(year from start_time) "year",
+    extract(weekday from start_time) "weekday"
+from unique_ts;
+"""
 
 # QUERY LISTS
 drop_table_queries = [
@@ -170,7 +233,7 @@ copy_table_queries = [
 
 insert_table_queries = [
     songplays_table_insert,
-    user_table_insert,
-    song_table_insert,
-    artist_table_insert,
+    users_table_insert,
+    songs_table_insert,
+    artists_table_insert,
     time_table_insert]
