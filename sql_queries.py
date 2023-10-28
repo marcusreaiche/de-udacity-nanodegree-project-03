@@ -113,11 +113,21 @@ create table if not exists time (
 """
 
 # STAGING TABLES
-staging_events_copy = ("""
-""").format()
+staging_events_copy = f"""
+copy staging_events
+from '{cfg.s3_log_data}'
+credentials 'aws_iam_role={cfg.iam_role_arn}'
+region 'us-west-2'
+json '{cfg.s3_log_jsonpath}';
+"""
 
-staging_songs_copy = ("""
-""").format()
+staging_songs_copy = f"""
+copy staging_songs
+from '{cfg.s3_song_data}'
+credentials 'aws_iam_role={cfg.iam_role_arn}'
+region 'us-west-2'
+format as json 'auto';
+"""
 
 # FINAL TABLES
 songplays_table_insert = ("""
@@ -154,7 +164,9 @@ create_table_queries = [
     artists_table_create,
     time_table_create]
 
-copy_table_queries = [staging_events_copy, staging_songs_copy]
+copy_table_queries = [
+    staging_events_copy,
+    staging_songs_copy]
 
 insert_table_queries = [
     songplays_table_insert,
