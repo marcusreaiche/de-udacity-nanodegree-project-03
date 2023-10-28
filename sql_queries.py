@@ -59,7 +59,7 @@ songplays_table_create = """
 create table if not exists songplays (
     songplay_id integer identity(0,1) primary key,
     start_time timestamp,
-    user_id varchar(10),
+    user_id integer,
     level varchar(4),
     song_id varchar(18),
     artist_id varchar(18),
@@ -71,7 +71,7 @@ create table if not exists songplays (
 
 users_table_create = """
 create table if not exists users (
-	user_id varchar(10) not null,
+	user_id integer not null,
     first_name varchar(32),
     last_name varchar(64),
     gender varchar(1),
@@ -92,7 +92,7 @@ create table if not exists songs (
 
 artists_table_create = """
 create table if not exists artists (
-    artist_id integer primary key,
+    artist_id varchar(18) primary key,
     name varchar(252) not null,
     location varchar(252),
     latitude float,
