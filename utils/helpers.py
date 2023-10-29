@@ -13,7 +13,7 @@ def build_conn_string(username, password, endpoint, port, db):
     return f"postgresql://{username}:{password}@{endpoint}:{port}/{db}"
 
 
-def create_dotenv_file_if_it_not_exists():
+def create_dotenv_file_if_not_exists():
     """
     Create a .env file in the project root directory if it does not exist
     """
