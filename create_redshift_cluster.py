@@ -7,6 +7,7 @@ from utils.manage_aws_resources import (
     create_redshift_cluster,
     create_redshift_service_role,
     get_iam_role_arn)
+from utils.helpers import create_dotenv_file_if_not_exists
 from config import Config
 
 
@@ -18,6 +19,7 @@ def main():
     - Write cluster endpoint and IAM role arn to CONFIG_FILE
     """
     # Load environment variables
+    create_dotenv_file_if_not_exists()
     dotenv.load_dotenv('.env')
     # Read config
     config = Config()
