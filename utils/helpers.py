@@ -1,5 +1,9 @@
+"""
+Helper functions used in the Project.
+"""
 import os
 from pathlib import Path
+from prettytable import PrettyTable
 import dotenv
 
 
@@ -32,3 +36,31 @@ def create_dotenv_file_if_not_exists():
         dotenv.set_key(dotenv_path=dotenv_path,
                        key_to_set='AWS_CONFIG_FILE',
                        value_to_set=str(aws_default_config_file))
+
+
+def count_number_of_rows_query(table):
+    """
+    Count the number of rows of the table.
+    """
+    return f"select count(1) from {table}"
+
+
+def print_table(cur, headers=None):
+    """
+    Print table with specified headers.
+
+    Arguments:
+    cur: psycopg2.extensions.cursor
+    Database cursor
+
+    headers: default (None)
+    List of field names
+    """
+    table = PrettyTable()
+    if headers:
+        table.field_names = headers
+    row = cur.fetchone()
+    while row:
+        table.add_row(row)
+        row = cur.fetchone()
+    print(table)
