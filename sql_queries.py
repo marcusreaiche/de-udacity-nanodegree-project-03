@@ -1,5 +1,5 @@
 from config import Config
-from utils.helpers import drop_table
+from utils.helpers import drop_table, count_number_of_rows_query
 
 
 # CONFIG
@@ -208,6 +208,15 @@ select
 from unique_ts;
 """
 
+# EXAMPLE OF QUERIES
+staging_events_row_count = count_number_of_rows_query('staging_events')
+staging_songs_row_count = count_number_of_rows_query('staging_songs')
+songplays_row_count = count_number_of_rows_query('songplays')
+users_row_count = count_number_of_rows_query('users')
+songs_row_count = count_number_of_rows_query('songs')
+artists_row_count = count_number_of_rows_query('artists')
+time_row_count = count_number_of_rows_query('time')
+
 # QUERY LISTS
 drop_table_queries = [
     staging_events_table_drop,
@@ -237,3 +246,12 @@ insert_table_queries = [
     songs_table_insert,
     artists_table_insert,
     time_table_insert]
+
+row_count_queries = [
+    staging_events_row_count,
+    staging_songs_row_count,
+    songplays_row_count,
+    users_row_count,
+    songs_row_count,
+    artists_row_count,
+    time_row_count]
