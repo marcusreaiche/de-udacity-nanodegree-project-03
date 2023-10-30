@@ -235,3 +235,66 @@ $ python run_pipeline.py --steps 1,5
 ```
 
 The order of the steps matter and each comma-separated step is run one after the other.
+
+# 5. Data Wareshouse - The Songs Database
+
+## 5.1 Purpose
+
+The purpose of the data warehouse is to clean, preprocess, and prepare Sparkify's log data to be analyzed by the company's analytics team in an efficient way. This task is performed taking into consideration optimization for analytics queries instead of transactional ones. In this regard, a star schema was designed with a fact table being surrounded by dimension tables. In this way, we avoid performing deep and complicated joins to fetch the data since it is not presented in 3NF. Another advantage is not performing big analytics queries over the OLTP database to avoid overloading the transactional system.
+
+## 5.2 Database Schema Design
+
+The songs database follows a star schema with a fact table, songplays, surrounded by dimension tables.
+
+Fact table
+- songplays
+  > records in event data associated with song plays, i.e., records with page `NextSong`
+  > - songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
+
+Dimension tables
+- users:
+  > users in the app
+  > - user_id, first_name, last_name, gender, level
+- songs
+  > songs in the music database
+  > - song_id, title, artist_id, year, duration
+- artists
+  > artists in music database
+  > - artists_id, name, location, latitude, longitude
+- time
+  > timestamp of records in songplays broken down into specific units
+  > - start_time, hour, day, week, month, year, weekday
+
+In this way, the analytics team can intuitively and easily create and run efficient queries against the database.
+
+![](imgs/star_schema.png)
+
+## 5.3 Example of Analytical Queries
+
+In the script `analytics_queries.py` a few examples of analytics queries are presented. Run the script to answer the questions listed in the sequel.
+
+### 5.3.1 Count the Total Number of Rows for Each Table
+
+This is done mostly for checking purposes.
+
+The following result is expected:
+
+![](imgs/number_of_rows.png)
+
+### 5.3.2 Users Queries
+
+We want to answer the following questions:
+
+- What is the users distribution by gender?
+- What is the users distribution by level (free/paid)?
+
+The last question is particularly interesting since we discover that there are many more free users than paid users in the app.
+
+### 5.3.3 Song Plays Queries
+
+We want to answer the following questions:
+
+- What is the number of song plays distribution by user level?
+- What is the number of song plays distribution by hour?
+
+Even though there are almost four times more free users than paid ones, the latter group is responsible for playing more than four times more songs than the former.
