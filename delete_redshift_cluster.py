@@ -1,7 +1,8 @@
 """
 Delete Redshift Cluster and Data Warehouse IAM role
-- CLUSTER_IDENTIFIER
-- IAM_ROLE_NAME
+It also removes the dynamically created keys in dwg.cfg
+  - db_host in CLUSTER_CREDENTIALS
+  - arn in IAM_ROLE
 """
 import dotenv
 import boto3

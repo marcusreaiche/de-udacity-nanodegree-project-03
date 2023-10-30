@@ -1,3 +1,6 @@
+"""
+Perform ETL by loading staging tables and doing insertions in the star schema tables.
+"""
 import psycopg2
 from config import Config
 from utils.helpers import build_conn_string
@@ -19,7 +22,7 @@ def insert_tables(cur, conn):
 
 
 def main():
-    print('Running etl')
+    # Config
     cfg = Config()
     cfg.read()
     # Connect to cluster

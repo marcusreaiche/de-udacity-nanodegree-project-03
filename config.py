@@ -1,3 +1,6 @@
+"""
+Help to manage the Project configuration.
+"""
 import os
 import configparser
 
