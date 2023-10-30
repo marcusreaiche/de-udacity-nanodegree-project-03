@@ -209,6 +209,8 @@ from unique_ts;
 """
 
 # EXAMPLE OF QUERIES
+# ROW COUNT QUERIES
+row_count_headers = ['number_of_rows']
 staging_events_row_count = count_number_of_rows_query('staging_events')
 staging_songs_row_count = count_number_of_rows_query('staging_songs')
 songplays_row_count = count_number_of_rows_query('songplays')
@@ -216,6 +218,48 @@ users_row_count = count_number_of_rows_query('users')
 songs_row_count = count_number_of_rows_query('songs')
 artists_row_count = count_number_of_rows_query('artists')
 time_row_count = count_number_of_rows_query('time')
+# USERS QUERIES
+users_by_gender_question = 'What is the users distribution by gender?'
+users_by_gender_headers = ['gender', 'number_of_users']
+users_by_gender = """
+select
+    gender,
+    count(1) as number_of_users
+from users
+group by gender;
+"""
+users_by_level_question = 'What is the users distribution by level (free/paid)?'
+users_by_level_headers = ['level', 'number_of_users']
+users_by_level = """
+select
+    level,
+    count(1) as number_of_users
+from users
+group by level;
+"""
+# SONGPLAYS QUERIES
+songplays_by_level_question = 'What is the number of plays distribution by level?'
+songplays_by_level_headers = ['level', 'number_of_plays']
+songplays_by_level = """
+select
+    level,
+    count(1) as number_of_plays
+from songplays
+group by level;
+"""
+songplays_by_hour_question = 'What is the number of plays distribution by hour?'
+songplays_by_hour_headers = ['hour', 'number_of_plays']
+songplays_by_hour = """
+select
+    t.hour,
+    count(1) as number_of_plays
+from songplays as s
+join time as t
+on s.start_time = t.start_time
+group by t.hour
+order by t.hour;
+"""
+
 
 # QUERY LISTS
 drop_table_queries = [
@@ -248,10 +292,20 @@ insert_table_queries = [
     time_table_insert]
 
 row_count_queries = [
-    staging_events_row_count,
-    staging_songs_row_count,
-    songplays_row_count,
-    users_row_count,
-    songs_row_count,
-    artists_row_count,
-    time_row_count]
+    (row_count_headers, staging_events_row_count),
+    (row_count_headers, staging_songs_row_count),
+    (row_count_headers, songplays_row_count),
+    (row_count_headers, users_row_count),
+    (row_count_headers, songs_row_count),
+    (row_count_headers, artists_row_count),
+    (row_count_headers, time_row_count)]
+
+users_queries = [
+    (users_by_gender_question, users_by_gender_headers, users_by_gender),
+    (users_by_level_question, users_by_level_headers, users_by_level),
+]
+
+songplays_queries = [
+    (songplays_by_level_question, songplays_by_level_headers, songplays_by_level),
+    (songplays_by_hour_question, songplays_by_hour_headers, songplays_by_hour),
+]
