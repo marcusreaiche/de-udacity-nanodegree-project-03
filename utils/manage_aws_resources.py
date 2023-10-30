@@ -1,3 +1,6 @@
+"""
+Functions that help manage, create, and delete AWS resources.
+"""
 import time
 import json
 from botocore.exceptions import ClientError

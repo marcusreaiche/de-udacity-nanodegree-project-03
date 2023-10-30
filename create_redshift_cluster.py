@@ -1,5 +1,11 @@
 """
-Create Redshift Cluster following the specifications set in CONFIG_FILE (dwg.cfg)
+Creates the following AWS resources as specified in the config file (dwg.cfg):
+  - a Redshift cluster,
+  - an IAM role used by the Redshift cluster.
+
+This script dynamically fills in the:
+  - db_host (cluster endpoint) of the CLUSTER_CREDENTIALS section in dwg.cfg,
+  - arn of the IAM_ROLE section in dwh.cfg.
 """
 import dotenv
 import boto3

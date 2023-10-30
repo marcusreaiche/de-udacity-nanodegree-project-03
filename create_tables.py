@@ -1,3 +1,10 @@
+"""
+Creates staging tables, i.e., `staging_events` and `staging_songs`.
+Creates a star schema with:
+  - fact table: `songplays`, and
+  - dimension tables: `users`, `songs`, `artists`, and `time`.
+Before creating these tables, the script deletes any of them if they exist.
+"""
 import psycopg2
 from sql_queries import create_table_queries, drop_table_queries
 from config import Config
@@ -32,7 +39,9 @@ def main():
         with psycopg2.connect(conn_str) as conn:
             print(f'Connected to {conn}')
             cur = conn.cursor()
+            print('Droping tables')
             drop_tables(cur, conn)
+            print('Creating tables')
             create_tables(cur, conn)
     except Exception as err:
         print(err)
