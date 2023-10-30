@@ -81,7 +81,6 @@ def create_redshift_cluster(redshift_client,
     """
     Creates Redshift cluster.
     """
-    start = time.time()
     if iam_roles is None:
         iam_roles = []
     try:
@@ -114,8 +113,6 @@ def create_redshift_cluster(redshift_client,
         else:
             print(f' {cluster_props["ClusterStatus"]}')
             break
-    final = time.time()
-    print(f'Task took {final - start:.1f} seconds')
     return cluster_props
 
 
@@ -126,7 +123,6 @@ def delete_redshift_cluster(redshift_client,
     """
     Delete specified Redshift cluster
     """
-    start = time.time()
     redshift_client.delete_cluster(
         ClusterIdentifier=cluster_identifier,
         SkipFinalClusterSnapshot=skip_final_cluster_snapshot,
@@ -148,8 +144,6 @@ def delete_redshift_cluster(redshift_client,
         except ClientError as err:
             print(' deleted')
             break
-    final = time.time()
-    print(f'Task took {final - start:.1f} seconds')
     return cluster_props
 
 
