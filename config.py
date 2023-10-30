@@ -26,6 +26,7 @@ class Config:
         # IAM Role Name
         iam_role = self.config['IAM_ROLE']
         self.iam_role_name = iam_role['name']
+        self.iam_role_policy_arn_lst = iam_role['policies_to_attach'].split(',')
         if 'arn' in iam_role:
             self.iam_role_arn = iam_role['arn']
         # Identifier & Credentials

@@ -111,6 +111,7 @@ Project directory tree
 ```
 ├── LICENSE
 ├── README.md
+├── analytics_queries.py
 ├── conda.yml
 ├── config.py
 ├── create_redshift_cluster.py
@@ -119,15 +120,18 @@ Project directory tree
 ├── dwh.cfg
 ├── etl.py
 ├── example.env
-├── execute_example_queries.py
 ├── imgs
-│   └── sparkify.png
+│   ├── number_of_rows.png
+│   ├── sparkify.png
+│   └── star_schema.png
 ├── run_pipeline.py
 ├── sql_queries.py
 └── utils
     ├── __init__.py
     ├── helpers.py
     └── manage_aws_resources.py
+
+3 directories, 19 files
 ```
 
 ## 3.1 Scripts
@@ -196,6 +200,8 @@ Other files that compose the Project are:
 - .gitignore
 - LICENSE
 - .editorconfig
+- imgs directory
+  > Contains the PNG files displayed in README
 
 # 4. Running the Scripts
 
