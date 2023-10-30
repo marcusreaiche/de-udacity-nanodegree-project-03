@@ -36,7 +36,7 @@ def main():
     role_response = create_redshift_service_role(
         iam_client=iam,
         role_name=config.iam_role_name,
-        policy_arn_lst=["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"])
+        policy_arn_lst=config.iam_role_policy_arn_lst)
     # Service role Arn
     iam_role_arn = get_iam_role_arn(iam_client=iam,
                                     iam_role_name=config.iam_role_name)
