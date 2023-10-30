@@ -63,4 +63,4 @@ def print_table(cur, headers=None):
     while row:
         table.add_row(row)
         row = cur.fetchone()
-    print(table)
+    print(table, end='\n\n')
