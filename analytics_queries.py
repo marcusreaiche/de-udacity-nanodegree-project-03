@@ -1,5 +1,5 @@
 """
-Executes examples of queries that one would like to do in the Data Warehouse.
+Executes examples of analytics queries that one would like to do in the Data Warehouse.
 """
 import psycopg2
 from sql_queries import row_count_queries, users_queries, songplays_queries

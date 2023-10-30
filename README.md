@@ -143,8 +143,8 @@ The Project has 5 scripts:
 - etl.py
   > Perform ETL by loading staging tables and doing insertions in the star schema tables.
 
-- execute_example_queries.py
-  > Execute examples of queries that one would like to do in the Data Warehouse.
+- analytics_queries.py
+  > Execute examples of analytics queries that one would like to do in the Data Warehouse.
 
 - delete_redshift_cluster.py
   > Delete the Redshift cluster and the IAM role.
@@ -211,7 +211,7 @@ However, one needs only to execute the `run_pipeline` script in order to execute
 > 1. create_redshift_cluster
 > 2. create_tables
 > 3. etl
-> 4. execute_example_queries
+> 4. analytics_queries
 > 5. delete_redshift_cluster
 
 By default all steps are run when executing:

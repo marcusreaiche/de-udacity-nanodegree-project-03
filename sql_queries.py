@@ -208,7 +208,7 @@ select
 from unique_ts;
 """
 
-# EXAMPLE OF QUERIES
+# EXAMPLE OF ANALYTICS QUERIES
 # ROW COUNT QUERIES
 row_count_headers = ['number_of_rows']
 staging_events_row_count = count_number_of_rows_query('staging_events')
