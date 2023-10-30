@@ -106,6 +106,30 @@ output = json
 
 # 3. Project Structure
 
+Project directory tree
+
+```
+├── LICENSE
+├── README.md
+├── conda.yml
+├── config.py
+├── create_redshift_cluster.py
+├── create_tables.py
+├── delete_redshift_cluster.py
+├── dwh.cfg
+├── etl.py
+├── example.env
+├── execute_example_queries.py
+├── imgs
+│   └── sparkify.png
+├── run_pipeline.py
+├── sql_queries.py
+└── utils
+    ├── __init__.py
+    ├── helpers.py
+    └── manage_aws_resources.py
+```
+
 ## 3.1 Scripts
 
 The Project has 5 scripts:
