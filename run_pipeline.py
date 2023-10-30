@@ -3,7 +3,7 @@ This script runs the full pipeline
 - Step1: creates the Redshift cluster
 - Step2: creates tables in the Redshift cluster
 - Step3: runs the ETL
-- Step4: executes example queries
+- Step4: analytics queries
 - Step5: delete Redshift cluster
 """
 import argparse
@@ -15,7 +15,7 @@ STEPS = {
     1: 'create_redshift_cluster',
     2: 'create_tables',
     3: 'etl',
-    4: 'execute_example_queries',
+    4: 'analytics_queries',
     5: 'delete_redshift_cluster'
 }
 
@@ -33,7 +33,7 @@ def parse_args():
             1: create_redshift_cluster
             2: create_tables
             3: etl
-            4: execute_example_queries
+            4: analytics_queries
             5: delete_redshift_cluster""")
     return parser.parse_args()
 
